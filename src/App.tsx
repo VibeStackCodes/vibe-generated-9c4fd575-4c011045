@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { HomePage } from './pages/HomePage';
+import { SchedulePage } from './pages/SchedulePage';
+import { MembersPage } from './pages/MembersPage';
+import { LeadsPage } from './pages/LeadsPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { cn } from '@/lib/utils';
 
+const Navigation: React.FC = () => {
+  const links = [
+    { to: '/', label: 'Home' },
+    { to: '/schedule', label: 'Schedule' },
+    { to: '/members', label: 'Memberships' },
+    { to: '/leads', label: 'Leads' },
+    { to: '/analytics', label: 'Analytics' }
+  ];
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <nav aria-label="Main Navigation" className="bg-primary text-white shadow-sm">
+      <div className="container flex items-center justify-between h-14">
+        <div className="text-xl font-semibold" style={{ color: '#fff' }}>FitLaunch Pro</div>
+        <div className="flex space-x-4">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className={cn('px-3 py-2 rounded hover:bg-blue-700')}>
+              {l.label}
+            </Link>
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </nav>
+  );
+};
 
-export default App
+export default function App() {
+  return (
+    <div>
+      <Navigation />
+      <main className="container py-6">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/schedule" element={<SchedulePage />} />
+          <Route path="/members" element={<MembersPage />} />
+          <Route path="/leads" element={<LeadsPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
